@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/matrix-org/gomatrixserverlib"
 )
 
@@ -9,10 +10,17 @@ var str string = `{"body":"video_5e1f43c.mp4","info":{"duration":30466.666666666
 
 var bytes = []byte(str)
 
-func main() {
-	// validate json
-	var json, err = gomatrixserverlib.CanonicalJSON(bytes)
-	// log stuff
+var v6 gomatrixserverlib.RoomVersion = "6"
+var v5 gomatrixserverlib.RoomVersion = "5"
+
+func logTestCase(str string) {
+	fmt.Printf("\n")
+	fmt.Printf(str)
+	fmt.Printf("\n")
+}
+
+func logResult(json []byte, err error) {
+	fmt.Printf("\n")
 	fmt.Printf("JSON:")
 	fmt.Printf("\n")
 	fmt.Printf("%v", json)
@@ -20,4 +28,28 @@ func main() {
 	fmt.Printf("Error:")
 	fmt.Printf("\n")
 	fmt.Printf("%v", err)
+}
+
+func validateCanonicalJSON() {
+	logTestCase("Validating CanonicalJSON()...")
+	var json, err = gomatrixserverlib.CanonicalJSON(bytes)
+	logResult(json, err)
+}
+
+func validateEnforcedJSONRoomV6() {
+	logTestCase("Validating EnforcedCanonicalJSON() with RoomVersion 6...")
+	var json, err = gomatrixserverlib.EnforcedCanonicalJSON(bytes, v6)
+	logResult(json, err)
+}
+
+func validateEnforcedJSONRoomV5() {
+	logTestCase("Validating EnforcedCanonicalJSON() with RoomVersion 5...")
+	var json, err = gomatrixserverlib.EnforcedCanonicalJSON(bytes, v5)
+	logResult(json, err)
+}
+
+func main() {
+	validateCanonicalJSON()
+	validateEnforcedJSONRoomV6()
+	validateEnforcedJSONRoomV5()
 }
