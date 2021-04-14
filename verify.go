@@ -50,6 +50,6 @@ func validateEnforcedJSONRoomV5() {
 
 func main() {
 	validateCanonicalJSON()
-	validateEnforcedJSONRoomV6()
+	validateEnforcedJSONRoomV6() // <- the failing validation
 	validateEnforcedJSONRoomV5()
 }
